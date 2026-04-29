@@ -278,7 +278,7 @@
                         <span id="wallet-balance">0</span> <span class="text-2xl text-yellow-500"><i class="fas fa-coins"></i></span>
                     </h1>
                     <div class="inline-block bg-slate-800/80 backdrop-blur border border-white/10 px-4 py-1.5 rounded-full text-xs text-slate-300">
-                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">₹1</span>
+                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">$1</span>
                     </div>
                 </div>
                 <div class="glass-card rounded-2xl p-5 mb-8">
@@ -458,7 +458,7 @@
 window.addEventListener("load", () => {
     if (window.Adsgram) {
         AdController = window.Adsgram.init({
-            blockId: "28066"
+            blockId: "28160"
         });
     }
 });
@@ -568,6 +568,7 @@ window.addEventListener("load", () => {
                 }
                 setupPresenceSystem(user.uid);
                 await initUserData(user.uid);
+updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 loadSettings();
@@ -581,7 +582,7 @@ window.addEventListener("load", () => {
             try {
                 const doc = await ref.get();
                 if (!doc.exists) {
-                    const code = 'FAST' + Math.floor(10000 + Math.random() * 90000);
+                    const code = 'ARENA' + Math.floor(10000 + Math.random() * 90000);
                     const initialData = {
                         uid: uid,
                         telegramId: tgUser ? tgUser.id : 'anon',
@@ -620,13 +621,21 @@ window.addEventListener("load", () => {
                 showToast(`Bonus: +${SETTINGS.signupBonus} Coins!`, "success");
                 const referrerId = refCodeDoc.data().userId;
                 const referrerRef = db.collection(`artifacts/${appId}/users/${referrerId}/profile`).doc('main');
-                try {
-                    await referrerRef.update({
-                        balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-                        totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-                        totalRefers: firebase.firestore.FieldValue.increment(1)
-                    });
-                    db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+
+try {
+    const refDoc = await referrerRef.get();
+
+    if (refDoc.exists) {
+        await referrerRef.update({
+            balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+            totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+            totalRefers: firebase.firestore.FieldValue.increment(1)
+        });
+
+        console.log("Referral reward given successfully");
+    } else {
+        console.error("Referrer not found");
+    }const                db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 } catch(err) { console.warn("Referrer update failed", err); }
                 sessionStorage.removeItem('refCode');
             } catch(e) { console.log("Referral Error", e); }
@@ -639,7 +648,7 @@ window.addEventListener("load", () => {
         }
 
         function shareOnTelegram() {
-            const botLink = `https://t.me/ PlayKingArenaXbot?startapp=${userData.referralCode}`;
+            const botLink = `https://t.me/PlayKingArenaXbot?startapp=${userData.referralCode}`;
             const text = `Join PlayKing Arena & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
             const url = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
@@ -742,6 +751,11 @@ function showClaimOverlay(source) {
             db.collection(`artifacts/${appId}/public/data/settings`).doc('global')
               .onSnapshot((doc) => {
                 if (doc.exists) {
+    const d = doc.data();
+    ...
+} else {
+    updateWithdrawUI(); // 🔥 fallback if Firebase empty
+}
                     const d = doc.data();
                     if(d.coinValue) SETTINGS.coinValue = d.coinValue;
                     if(d.paymentMethods) SETTINGS.paymentMethods = d.paymentMethods;
@@ -1060,4 +1074,4 @@ function showClaimOverlay(source) {
         }
     </script>
 </body>
-    </html>
+                                                                                         </html>
