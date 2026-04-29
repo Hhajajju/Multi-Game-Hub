@@ -568,6 +568,7 @@ window.addEventListener("load", () => {
                 }
                 setupPresenceSystem(user.uid);
                 await initUserData(user.uid);
+updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 loadSettings();
@@ -581,7 +582,7 @@ window.addEventListener("load", () => {
             try {
                 const doc = await ref.get();
                 if (!doc.exists) {
-                    const code = 'FAST' + Math.floor(10000 + Math.random() * 90000);
+                    const code = 'ARENA' + Math.floor(10000 + Math.random() * 90000);
                     const initialData = {
                         uid: uid,
                         telegramId: tgUser ? tgUser.id : 'anon',
@@ -620,13 +621,21 @@ window.addEventListener("load", () => {
                 showToast(`Bonus: +${SETTINGS.signupBonus} Coins!`, "success");
                 const referrerId = refCodeDoc.data().userId;
                 const referrerRef = db.collection(`artifacts/${appId}/users/${referrerId}/profile`).doc('main');
-                try {
-                    await referrerRef.update({
-                        balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-                        totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-                        totalRefers: firebase.firestore.FieldValue.increment(1)
-                    });
-                    db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+
+try {
+    const refDoc = await referrerRef.get();
+
+    if (refDoc.exists) {
+        await referrerRef.update({
+            balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+            totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+            totalRefers: firebase.firestore.FieldValue.increment(1)
+        });
+
+        console.log("Referral reward given successfully");
+    } else {
+        console.error("Referrer not found");
+    }const                db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 } catch(err) { console.warn("Referrer update failed", err); }
                 sessionStorage.removeItem('refCode');
             } catch(e) { console.log("Referral Error", e); }
@@ -742,6 +751,11 @@ function showClaimOverlay(source) {
             db.collection(`artifacts/${appId}/public/data/settings`).doc('global')
               .onSnapshot((doc) => {
                 if (doc.exists) {
+    const d = doc.data();
+    ...
+} else {
+    updateWithdrawUI(); // 🔥 fallback if Firebase empty
+}
                     const d = doc.data();
                     if(d.coinValue) SETTINGS.coinValue = d.coinValue;
                     if(d.paymentMethods) SETTINGS.paymentMethods = d.paymentMethods;
