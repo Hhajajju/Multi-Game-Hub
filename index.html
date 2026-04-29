@@ -278,7 +278,7 @@
                         <span id="wallet-balance">0</span> <span class="text-2xl text-yellow-500"><i class="fas fa-coins"></i></span>
                     </h1>
                     <div class="inline-block bg-slate-800/80 backdrop-blur border border-white/10 px-4 py-1.5 rounded-full text-xs text-slate-300">
-                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">₹1</span>
+                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">$1</span>
                     </div>
                 </div>
                 <div class="glass-card rounded-2xl p-5 mb-8">
@@ -639,7 +639,7 @@ window.addEventListener("load", () => {
         }
 
         function shareOnTelegram() {
-            const botLink = `https://t.me/ PlayKingArenaXbot?startapp=${userData.referralCode}`;
+            const botLink = `https://t.me/PlayKingArenaXbot?startapp=${userData.referralCode}`;
             const text = `Join PlayKing Arena & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
             const url = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
