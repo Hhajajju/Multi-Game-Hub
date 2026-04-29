@@ -610,15 +610,11 @@ updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
             if(!code) return; code = code.trim().toUpperCase();
             if(userData.referredBy || code === userData.referralCode) return;
             try {
-                const refCodeDoc = await db.collection(`artifacts/${appId}/public/data/referralCodes`).doc(code).get();
-                if(!refCodeDoc.exists) { showToast("Invalid Referral Code", "error"); return; }
-                const userRef = db.collection(`artifacts/${appId}/users/${currentUser.uid}/profile`).doc('main');
-                await userRef.update({
-                    balance: firebase.firestore.FieldValue.increment(SETTINGS.signupBonus),
-                    totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.signupBonus),
-                    referredBy: code
-                });
-                showToast(`Bonus: +${SETTINGS.signupBonus} Coins!`, "success");
+                const refCodeDoc = await db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({
+    amount: SETTINGS.referBonus,
+    source: `Referral: ${userData.firstName}`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+});await            showToast(`Bonus: +${SETTINGS.signupBonus} Coins!`, "success");
                 const referrerId = refCodeDoc.data().userId;
                 const referrerRef = db.collection(`artifacts/${appId}/users/${referrerId}/profile`).doc('main');
 
