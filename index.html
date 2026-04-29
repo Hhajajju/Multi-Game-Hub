@@ -651,7 +651,7 @@ updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
 }    console.log("Referral reward given successfully");
     } else {
         console.error("Referrer not found");
-    }const                db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    }(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 } catch(err) { console.warn("Referrer update failed", err); }
                 sessionStorage.removeItem('refCode');
             } catch(e) { console.log("Referral Error", e); }
@@ -1089,4 +1089,5 @@ function showClaimOverlay(source) {
         }
     </script>
 </body>
+                                                                                         </html>
                                                                                          </html>
