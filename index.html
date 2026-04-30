@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PlayKing Arena</title>
+    <title>PlayKing Arena</title></title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -278,7 +278,7 @@
                         <span id="wallet-balance">0</span> <span class="text-2xl text-yellow-500"><i class="fas fa-coins"></i></span>
                     </h1>
                     <div class="inline-block bg-slate-800/80 backdrop-blur border border-white/10 px-4 py-1.5 rounded-full text-xs text-slate-300">
-                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">$1</span>
+                        Rate: 3000 Coins = <span id="val-disp" class="text-green-400 font-bold">₹1</span>
                     </div>
                 </div>
                 <div class="glass-card rounded-2xl p-5 mb-8">
@@ -458,7 +458,7 @@
 window.addEventListener("load", () => {
     if (window.Adsgram) {
         AdController = window.Adsgram.init({
-            blockId: "28160"
+            blockId: "27488"
         });
     }
 });
@@ -537,7 +537,7 @@ window.addEventListener("load", () => {
                 const rAmt = amounts[Math.floor(Math.random() * amounts.length)];
                 const div = document.createElement('div');
                 div.className = 'payment-slide';
-                div.innerHTML = `<div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${rName}&background=random" class="w-6 h-6 rounded-full"><span class="text-xs text-slate-300">${rName} withdrew <span class="text-green-400 font-bold">$${rAmt}</span></span></div>`;
+                div.innerHTML = `<div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${rName}&background=random" class="w-6 h-6 rounded-full"><span class="text-xs text-slate-300">${rName} withdrew <span class="text-green-400 font-bold">₹${rAmt}</span></span></div>`;
                 slider.appendChild(div);
                 setTimeout(() => div.classList.add('active'), 50);
             }, 3500);
@@ -568,7 +568,6 @@ window.addEventListener("load", () => {
                 }
                 setupPresenceSystem(user.uid);
                 await initUserData(user.uid);
-updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 loadSettings();
@@ -582,7 +581,7 @@ updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
             try {
                 const doc = await ref.get();
                 if (!doc.exists) {
-                    const code = 'ARENA' + Math.floor(10000 + Math.random() * 90000);
+                    const code = 'FAST' + Math.floor(10000 + Math.random() * 90000);
                     const initialData = {
                         uid: uid,
                         telegramId: tgUser ? tgUser.id : 'anon',
@@ -621,21 +620,13 @@ updateWithdrawUI(); // 🔥 FORCE LOAD DEFAULT METHODS
                 showToast(`Bonus: +${SETTINGS.signupBonus} Coins!`, "success");
                 const referrerId = refCodeDoc.data().userId;
                 const referrerRef = db.collection(`artifacts/${appId}/users/${referrerId}/profile`).doc('main');
-
-try {
-    const refDoc = await referrerRef.get();
-
-    if (refDoc.exists) {
-        await referrerRef.update({
-            balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-            totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
-            totalRefers: firebase.firestore.FieldValue.increment(1)
-        });
-
-        console.log("Referral reward given successfully");
-    } else {
-        console.error("Referrer not found");
-    }const                db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                try {
+                    await referrerRef.update({
+                        balance: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+                        totalEarned: firebase.firestore.FieldValue.increment(SETTINGS.referBonus),
+                        totalRefers: firebase.firestore.FieldValue.increment(1)
+                    });
+                    db.collection(`artifacts/${appId}/users/${referrerId}/earnings`).add({ amount: SETTINGS.referBonus, source: `Referral: ${userData.firstName}`, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 } catch(err) { console.warn("Referrer update failed", err); }
                 sessionStorage.removeItem('refCode');
             } catch(e) { console.log("Referral Error", e); }
@@ -648,8 +639,8 @@ try {
         }
 
         function shareOnTelegram() {
-            const botLink = `https://t.me/PlayKingArenaXbot?startapp=${userData.referralCode}`;
-            const text = `Join PlayKing Arena & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
+            const botLink = `https://t.me/Earnfast11_bot?startapp=${userData.referralCode}`;
+            const text = `Join EarnFast & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
             const url = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
         }
@@ -751,11 +742,6 @@ function showClaimOverlay(source) {
             db.collection(`artifacts/${appId}/public/data/settings`).doc('global')
               .onSnapshot((doc) => {
                 if (doc.exists) {
-    const d = doc.data();
-    ...
-} else {
-    updateWithdrawUI(); // 🔥 fallback if Firebase empty
-}
                     const d = doc.data();
                     if(d.coinValue) SETTINGS.coinValue = d.coinValue;
                     if(d.paymentMethods) SETTINGS.paymentMethods = d.paymentMethods;
@@ -1074,4 +1060,4 @@ function showClaimOverlay(source) {
         }
     </script>
 </body>
-                                                                                         </html>
+    </html>
